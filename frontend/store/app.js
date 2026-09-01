@@ -122,19 +122,34 @@ function closeDetail() {
   document.getElementById('detailModal').style.display = 'none';
 }
 
-// ---- Product card ----
+// ---- Product card (matches ozl.fashion: photo, Pre-order badge, name, price, Ships date) ----
+function shipDate() {
+  // Deterministic "ships on" date ~8 days out, fixed per session
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 function productCard(p) {
-  const badge = p.stock <= 0 ? '<span class="product-badge badge-oos">Out of Stock</span>'
+  const oos = p.stock <= 0;
+  const badge = oos ? '<span class="product-badge badge-oos">Pre-order</span>'
     : p.stock <= p.low_stock_at ? '<span class="product-badge badge-low">Low Stock</span>'
     : '<span class="product-badge badge-in">In Stock</span>';
+  const ships = oos ? `<div class="ship-date">Ships ${shipDate()}</div>` : '';
+  const btn = oos
+    ? '<button class="add-btn" disabled>Pre-order</button>'
+    : `<button class="add-btn" onclick="event.stopPropagation();addToCart(products.find(x=>x.id==${p.id}))">Add To Cart</button>`;
   return `
     <div class="product-card" onclick="openDetail(products.find(x=>x.id==${p.id}))">
-      <img class="product-img" src="${esc(p.image_url || PLACEHOLDER)}" alt="${esc(p.name)}" onerror="this.src='${PLACEHOLDER}'" loading="lazy" />
+      <div class="product-img-wrap">
+        <img class="product-img" src="${esc(p.image_url || PLACEHOLDER)}" alt="${esc(p.name)}" onerror="this.src='${PLACEHOLDER}'" loading="lazy" />
+      </div>
       <div class="product-body">
         ${badge}
         <div class="product-name">${esc(p.name)}</div>
         <div class="product-price">${money(p.price)}</div>
-        <button class="add-btn" onclick="event.stopPropagation();addToCart(products.find(x=>x.id==${p.id}))" ${p.stock <= 0 ? 'disabled' : ''}>${p.stock > 0 ? 'Add To Cart' : 'Out of Stock'}</button>
+        ${ships}
+        <div class="card-action">${btn}</div>
       </div>
     </div>`;
 }
