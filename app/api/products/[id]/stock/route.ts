@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 // Adjust stock: POST { type: "IN" | "OUT" | "ADJUST", quantity: number, note?: string }
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
