@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEVN — Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232d5a27'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>S</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top black nav -->
+  <header class="topbar">
+    <div class="brand" onclick="go('dashboard')">
+      <span class="logo">S</span>
+      <span class="brand-text">SEVN <em>Admin</em></span>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-view="dashboard" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-btn" data-view="products" onclick="go('products')">Products</button>
+      <button class="nav-btn" data-view="inventory" onclick="go('inventory')">Inventory</button>
+      <button class="nav-btn" data-view="orders" onclick="go('orders')">Orders</button>
+    </nav>
+    <div class="topbar-right">
+      <label class="api-label">API</label>
+      <input id="apiBase" class="api-input" placeholder="https://yourhost/sevn/api" />
+      <button class="btn btn-dark" onclick="saveApiBase()">Save</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <!-- ============ DASHBOARD ============ -->
+    <section id="view-dashboard" class="view active">
+      <h1>Dashboard</h1>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Low Stock Alerts</h2>
+          <button class="btn btn-primary" onclick="go('inventory')">Manage Inventory</button>
+        </div>
+        <table class="table" id="lowStockTable">
+          <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Stock</th><th>Low At</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section id="view-products" class="view">
+      <div class="view-head">
+        <h1>Products</h1>
+        <div class="view-actions">
+          <input id="productSearch" class="search" placeholder="Search name or SKU…" oninput="loadProducts()" />
+          <button class="btn btn-primary" onclick="openProductModal()">+ Add Product</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="productsTable">
+          <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th class="ta-r">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ INVENTORY ============ -->
+    <section id="view-inventory" class="view">
+      <div class="view-head">
+        <h1>Inventory</h1>
+        <div class="view-actions">
+          <input id="invSearch" class="search" placeholder="Search…" oninput="loadProducts(true)" />
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="inventoryTable">
+          <thead><tr><th>SKU</th><th>Name</th><th>Stock</th><th>Low At</th><th class="ta-r">Adjust</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ ORDERS ============ -->
+    <section id="view-orders" class="view">
+      <div class="view-head">
+        <h1>Orders</h1>
+        <div class="view-actions">
+          <select id="orderStatusFilter" class="search" onchange="loadOrders()">
+            <option value="">All statuses</option>
+            <option>pending</option>
+            <option>confirmed</option>
+            <option>shipped</option>
+            <option>delivered</option>
+            <option>cancelled</option>
+          </select>
+          <button class="btn btn-primary" onclick="openOrderModal()">+ New Order</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="ordersTable">
+          <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th class="ta-r">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>SEVN Admin — ozl.fashion style</span>
+    <span id="apiStatus" class="api-status">Not connected</span>
+  </footer>
+
+  <!-- ============ MODALS ============ -->
+  <div id="modalOverlay" class="overlay hidden">
+    <div class="modal" id="modalBox"></div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

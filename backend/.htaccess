@@ -1,0 +1,19 @@
+# SEVN Minimal — cPanel shared hosting
+# Blocks direct access to config/schema/seed and forces a default charset.
+
+Options -Indexes
+
+<FilesMatch "^(config\.php|schema\.sql|seed\.sql)$">
+  Require all denied
+</FilesMatch>
+
+AddDefaultCharset UTF-8
+
+# Pretty API routing: /sevn/api/products -> index.php
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Only rewrite when the file/dir does not exist
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.php [L]
+</IfModule>

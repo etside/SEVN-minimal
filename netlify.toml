@@ -1,7 +1,0 @@
-# Netlify config — SEVN Minimal
-[build]
-  command = "npm run build"
-
-[plugins]
-  [[plugins]]
-    package = "@netlify/plugin-nextjs"

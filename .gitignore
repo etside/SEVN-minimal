@@ -1,9 +1,4 @@
-node_modules/
-.next/
-out/
-dev.db
-dev.db-journal
-.env.production
-.DS_Store
+backend/config.php
 *.log
+.DS_Store
 .env
