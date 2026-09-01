@@ -1,0 +1,12 @@
+# Netlify config — SEVN Minimal
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Set DATABASE_URL to a hosted Postgres (e.g. Neon/Supabase) in Netlify env
+  DATABASE_URL = "postgresql://user:pass@host:5432/sevn"
+
+[plugins]
+  [[plugins]]
+    package = "@netlify/plugin-nextjs"
