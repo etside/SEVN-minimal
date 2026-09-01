@@ -2,7 +2,7 @@
 'use strict';
 
 const API = 'https://sevn.hause.ink/api';
-const PLACEHOLDER = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 375"><rect fill="%23f0f0f0" width="300" height="375"/><text x="150" y="188" text-anchor="middle" fill="%23999" font-family="Arial" font-size="40">📷</text></svg>';
+const PLACEHOLDER = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 375"><rect fill="%23f4f4f2" width="300" height="375"/><g fill="none" stroke="%23c9c7c2" stroke-width="2"><rect x="105" y="150" width="90" height="110" rx="4"/><path d="M105 160l45-28 45 28"/><path d="M105 205l38 38 14-20 38 42"/></g></svg>';
 
 // ---- Cart state ----
 let cart = JSON.parse(localStorage.getItem('ozl_cart') || '[]');
