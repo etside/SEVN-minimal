@@ -3,7 +3,7 @@
 
 // ---- Config ----
 const STORAGE_KEY = 'sevn_api_base';
-let API = localStorage.getItem(STORAGE_KEY) || 'https://yourhost/sevn/api';
+let API = localStorage.getItem(STORAGE_KEY) || 'https://hause.ink/sevn/api';
 
 const state = {
   products: [],
