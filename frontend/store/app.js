@@ -100,26 +100,50 @@ function closeCart() {
 }
 
 // ---- Product detail ----
+const CART_ICON = '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="19" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 7H6"/></svg>';
+const TBAG_ICON = '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>';
+
 function openDetail(product) {
+  const oos = product.stock <= 0;
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-body">
-      <img class="detail-img" src="${esc(product.image_url || PLACEHOLDER)}" alt="${esc(product.name)}" onerror="this.src='${PLACEHOLDER}'" />
+      <div class="detail-media">
+        <img class="detail-img" src="${esc(product.image_url || PLACEHOLDER)}" alt="${esc(product.name)}" onerror="this.src='${PLACEHOLDER}'" />
+      </div>
       <div class="detail-info">
-        <div class="detail-cat">${esc(product.category || '')}</div>
-        <h2>${esc(product.name)}</h2>
+        <div class="detail-eyebrow">${esc(product.category || 'New Collection')}</div>
+        <h2 class="detail-title">${esc(product.name)}</h2>
         <div class="detail-price">${money(product.price)}</div>
-        <p class="detail-desc">${esc(product.description) || 'Premium quality product from ozl.fashion.'}</p>
-        <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">SKU: ${esc(product.sku)} ${product.stock > 0 ? '| In Stock: ' + product.stock : '| Out of stock'}</p>
-        <button class="btn btn-block" onclick="addToCart(products.find(p=>p.id==${product.id}));closeDetail()" ${product.stock <= 0 ? 'disabled' : ''}>${product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}</button>
+        <div class="detail-meta">
+          <span class="meta-chip">${TBAG_ICON} SKU ${esc(product.sku)}</span>
+          <span class="meta-chip ${oos ? 'chip-oos' : 'chip-in'}">${oos ? 'Pre-order' : 'In Stock · ' + product.stock}</span>
+        </div>
+        <p class="detail-desc">${esc(product.description) || 'Premium quality product, cut for a refined fit and crafted to last.'}</p>
+        ${oos ? `<div class="ship-line">Ships ${shipDate()}</div>` : ''}
+        <button class="btn btn-block btn-lg" onclick="addToCart(products.find(p=>p.id==${product.id}));closeDetail()" ${oos ? 'disabled' : ''}>${oos ? 'Out of Stock' : CART_ICON + ' Add to Cart'}</button>
+        <div class="detail-note">Free delivery over ৳1,000 · 7-day returns</div>
       </div>
     </div>`;
-  document.getElementById('detailOverlay').classList.remove('hidden');
-  document.getElementById('detailModal').classList.remove('hidden');
-  document.getElementById('detailModal').style.display = 'block';
+  const ov = document.getElementById('detailOverlay');
+  const md = document.getElementById('detailModal');
+  ov.classList.remove('hidden');
+  ov.classList.add('fade-in');
+  md.classList.remove('hidden');
+  md.classList.add('anim-in');
+  document.body.style.overflow = 'hidden';
 }
 function closeDetail() {
-  document.getElementById('detailOverlay').classList.add('hidden');
-  document.getElementById('detailModal').style.display = 'none';
+  const ov = document.getElementById('detailOverlay');
+  const md = document.getElementById('detailModal');
+  md.classList.remove('anim-in');
+  md.classList.add('anim-out');
+  setTimeout(() => {
+    ov.classList.add('hidden');
+    ov.classList.remove('fade-in');
+    md.classList.add('hidden');
+    md.classList.remove('anim-out');
+    document.body.style.overflow = '';
+  }, 240);
 }
 
 // ---- Product card (matches ozl.fashion: photo, Pre-order badge, name, price, Ships date) ----
@@ -181,10 +205,34 @@ function renderProducts() {
   const gridIds = ['featuredGrid', 'popularGrid', 'trendingGrid', 'cottonGrid'];
   const datasets = [featured, popular, trending, cotton];
   gridIds.forEach((id, i) => {
-    document.getElementById(id).innerHTML = datasets[i].length
+    const grid = document.getElementById(id);
+    grid.innerHTML = datasets[i].length
       ? datasets[i].map(productCard).join('')
       : '<p style="grid-column:1/-1;text-align:center;color:var(--gray-400)">No products in this collection.</p>';
+    // stagger reveal
+    grid.querySelectorAll('.product-card').forEach((card, idx) => {
+      card.classList.add('reveal');
+      card.style.transitionDelay = (idx % 4) * 60 + 'ms';
+    });
   });
+  observeReveals();
+}
+
+// ---- Scroll reveal ----
+let revealObserver = null;
+function observeReveals() {
+  if (!('IntersectionObserver' in window)) return;
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+  }
+  document.querySelectorAll('.reveal:not(.in-view)').forEach((el) => revealObserver.observe(el));
 }
 
 function onSearch() {

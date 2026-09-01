@@ -2,3 +2,8 @@ backend/config.php
 *.log
 .DS_Store
 .env
+
+# NEVER commit private keys — this repo is PUBLIC
+DEPLOY_SSH.md
+ssh_sevn_deploy*
+
