@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ozl — Online Shop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232d5a27'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>o</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Black top nav -->
+  <nav class="nav">
+    <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+    <a class="nav-brand" href="./">ozl</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#featured">Featured</a>
+      <a href="#popular">Popular</a>
+      <a href="#trending">Trending</a>
+      <a href="#cotton">Cotton</a>
+      <a href="https://sevn.hause.ink" target="_blank" rel="noopener">Admin</a>
+    </div>
+    <div class="nav-actions">
+      <input id="search" class="nav-search" placeholder="Search products…" oninput="onSearch()" />
+      <button class="nav-icon" onclick="openCart()" aria-label="Cart">
+        🛒 <span id="cartCount" class="cart-count hidden">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">Premium Men&rsquo;s &amp; Women&rsquo;s Fashion</h1>
+      <p class="hero-sub">Handcrafted panjabi, shirts and kurtis — delivered across Bangladesh.</p>
+      <a class="btn" href="#featured">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <section class="section" id="featured">
+    <div class="section-head">
+      <h2>Featured</h2>
+      <a class="btn view-all" href="#featured">View All</a>
+    </div>
+    <div class="grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- Popular -->
+  <section class="section alt" id="popular">
+    <div class="section-head">
+      <h2>Popular</h2>
+      <a class="btn view-all" href="#popular">View All</a>
+    </div>
+    <div class="grid" id="popularGrid"></div>
+  </section>
+
+  <!-- Trending / New arrivals -->
+  <section class="section" id="trending">
+    <div class="section-head">
+      <h2>Trending</h2>
+      <a class="btn view-all" href="#trending">View All</a>
+    </div>
+    <div class="grid" id="trendingGrid"></div>
+  </section>
+
+  <!-- Category: Cotton -->
+  <section class="section alt" id="cotton">
+    <div class="section-head">
+      <h2>Cotton</h2>
+      <a class="btn view-all" href="#cotton">View All</a>
+    </div>
+    <div class="grid" id="cottonGrid"></div>
+  </section>
+
+  <!-- Black footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Refund Policy</a>
+    </div>
+    <p>© 2026 ozl.fashion</p>
+  </footer>
+
+  <!-- Cart sidebar -->
+  <div id="cartOverlay" class="overlay hidden" onclick="closeCart()"></div>
+  <aside id="cartDrawer" class="cart-drawer">
+    <div class="cart-head">
+      <h3>Cart (<span id="cartCountDrawer">0</span>)</h3>
+      <button class="cart-close" onclick="closeCart()">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div id="cartEmpty" class="cart-empty">
+      <p>Your cart is empty</p>
+      <button class="btn" onclick="closeCart()">Continue Shopping</button>
+    </div>
+    <div id="cartFooter" class="cart-footer hidden">
+      <div class="cart-total">Total: <strong id="cartTotal">৳0</strong></div>
+      <div class="cart-checkout">
+        <input id="checkoutName" placeholder="Your full name" />
+        <input id="checkoutPhone" placeholder="01XXXXXXXXX" />
+        <select id="checkoutPay">
+          <option value="cash">Cash on Delivery</option>
+          <option value="bkash">bKash</option>
+          <option value="nagad">Nagad</option>
+          <option value="card">Card</option>
+        </select>
+        <button class="btn btn-block" onclick="checkout()">Place Order</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Product detail modal -->
+  <div id="detailOverlay" class="overlay hidden" onclick="closeDetail()"></div>
+  <div id="detailModal" class="detail-modal">
+    <button class="detail-close" onclick="closeDetail()">×</button>
+    <div id="detailBody"></div>
+  </div>
+
+  <!-- Floating cart pill + WhatsApp -->
+  <button class="float-cart" onclick="openCart()">🛒 <span id="floatCount" class="hidden">0</span></button>
+  <a class="float-whatsapp" href="https://wa.me/8801XXXXXXXXX" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
