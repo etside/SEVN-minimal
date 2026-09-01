@@ -22,14 +22,16 @@ jobs:
 
       - name: Generate Prisma client & push schema
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Default to SQLite for CI so the build works without a hosted DB.
+          # Set DATABASE_URL secret for real data.
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'file:./ci.db' }}
         run: |
           npx prisma generate
-          npx prisma db push --skip-generate || echo "DB push skipped (no DB configured)"
+          npx prisma db push --skip-generate
 
       - name: Build
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'file:./ci.db' }}
         run: npm run build
 
       - name: Deploy to Netlify
