@@ -69,10 +69,14 @@ button { font-family: var(--font-body); cursor: pointer; }
   z-index: 100;
 }
 .nav-brand {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 26px;
-  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.nav-brand img {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 .nav-links {
   display: flex;
@@ -142,6 +146,12 @@ button { font-family: var(--font-body); cursor: pointer; }
   line-height: 1.1;
   letter-spacing: .5px;
   margin-bottom: 14px;
+}
+.hero-logo {
+  height: 64px;
+  width: auto;
+  margin: 0 auto 22px;
+  display: block;
 }
 .hero-sub { color: var(--text-muted); font-size: 15px; letter-spacing: .02em; margin-bottom: 30px; }
 .btn {
@@ -293,6 +303,12 @@ button { font-family: var(--font-body); cursor: pointer; }
   padding: 32px 24px;
   text-align: center;
   margin-top: auto;
+}
+.footer-logo {
+  height: 30px;
+  width: auto;
+  margin: 0 auto 20px;
+  display: block;
 }
 .footer-links {
   display: flex;

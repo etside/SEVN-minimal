@@ -54,16 +54,9 @@ body {
   flex-shrink: 0;
 }
 .logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  background: var(--primary);
-  color: #fff;
-  font-weight: 700;
-  font-size: 18px;
-  border-radius: 8px;
+  display: block;
+  width: auto;
+  height: 30px;
 }
 .brand-text {
   font-weight: 600;
